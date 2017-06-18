@@ -75,7 +75,7 @@ export default class ListAvaliations extends React.Component{
                 return null;
         });
 
-        if(Comments.every(function(elem){ return elem === null })){				
+        if(this.state.rates.every(function(elem){ return elem === null })){				
             Comments = <div class="well " > Leave a comment!</div>
         }
 

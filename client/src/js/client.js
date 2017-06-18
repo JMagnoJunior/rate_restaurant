@@ -5,6 +5,7 @@ import RatePanel from "./components/RatePanel/RatePanel"
 // import Auth from "./componentes/Infra/Auth/Auth"
 import { Router, Route, hashHistory } from 'react-router'
 
+require('./maps.js')
 
 class App extends React.Component{
 	constructor(){

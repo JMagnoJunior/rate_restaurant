@@ -11,15 +11,20 @@ import axios from 'axios'
 //     return error;
 //   });
 
-export function create(google_id, rate){	
-	return axios.post("http://localhost:3000/restaurants/"+google_id+"/rates", rate)
-}
-
-export function listAll(google_id){
-	return axios.get("http://localhost:3000/restaurants/"+google_id+"/rates")
+export function create(google_id, rate){
+	
+	
+	return axios.post(process.env.BACKEND_ENV+"restaurants/"+google_id+"/rates", rate)
 
 }
 
-export function verifyUserSession(){
-	return axios.get("http://localhost:3000/user")
+export function listAll(google_id){	
+
+	return axios.get(process.env.BACKEND_ENV+"restaurants/"+google_id+"/rates")
+
+
 }
+
+// export function verifyUserSession(){
+// 	return axios.get("http://localhost:3000/user")
+// }

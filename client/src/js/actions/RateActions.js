@@ -28,7 +28,7 @@ export function create(google_id, rate){
 }
 
 export function load(google_id){
-		RateDataManager.listAll(google_id).then(function(response){
+		RateDataManager.listAll(google_id).then(function(response){			
 			dispatcher.dispatch({
 				type : "LOAD_RATES" ,
 				"rates" : response.data.rates

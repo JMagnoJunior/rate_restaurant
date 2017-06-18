@@ -32,7 +32,7 @@ class RateStore extends EventEmitter{
 	}	
 
 	handleActions(action){
-		console.log("action recieve" , action)
+		console.log("action recieve" , action)		
 		switch(action.type){
 			case "NEW_RATE":{				
 				this.create(action.rate);
