@@ -36,8 +36,8 @@ module.exports = function() {
     }
 
     schema.statics.addRate = function(google_id, newRate){
-        
-        return Restaurant.findOne({"google_id": google_id}).exec()
+
+        return this.model('Restaurant').findOne({"google_id": google_id}).exec()
         .then(
             function(restaurant){
                 if(restaurant){
