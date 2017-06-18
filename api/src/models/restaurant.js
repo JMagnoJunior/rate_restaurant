@@ -5,7 +5,8 @@ module.exports = function() {
 
 
     var Rate = mongoose.Schema({
-        user: {type: String},
+        user_name: {type: String},
+        user_email: {type: String, required: [true, "Enter your email"]},
         comment: {type: String},
         stars: {
                 type: Number, 

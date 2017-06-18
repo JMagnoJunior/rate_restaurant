@@ -54,7 +54,8 @@ module.exports = function() {
     app.use(passport.session());
 
     // isso aqui é um monte de coisa pra enganar os raquis
-    app.use(helmet.frameguard());
+    // app.use(helmet.frameguard());
+    app.use(helmet.frameguard({ action: 'allow-from', domain: 'https://localhost:8080' }))
     // finge ser outra plataforma
     app.use(helmet.hidePoweredBy({ setTo: 'PHP 5.5.14' }));
     // evitar cross-site scripting

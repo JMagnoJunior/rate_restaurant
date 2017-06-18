@@ -7,105 +7,132 @@ import RateStore from "../../stores/RateStore"
 import * as RateActions from "../../actions/RateActions"
 
 
-
 export default class ListAvaliations extends React.Component{
-	constructor(){
-		super();
-		this.state = {
-			rates :  RateStore.getAll(),
-		}
-		this.listeningRate = this.listeningRate.bind(this)
-	}
+    constructor(){
+        super();
+        this.state = {
+        rates:  RateStore.getAll(),
+            filterComments: ""
+        }
 
-	componentWillMount(){		
+        this.listeningRate = this.listeningRate.bind(this)
+        this.filterComments = this.filterComments.bind(this)
+    }
+
+    componentWillMount(){
         RateStore.on("change",this.listeningRate);
     }
 
-    componentWillUnmount(){				
+    componentWillUnmount(){
         RateStore.removeListener("change", this.listeningRate);
     }
 
-	componentDidMount(){
-		RateActions.load(this.props.google_id)
-	}
+    componentDidMount(){
+        RateActions.load(this.props.google_id)
+    }
 
-	listeningRate(){		
-		this.setState({rates: RateStore.getAll()})
-	}
+    componentWillReceiveProps(nextProps){
+        if ( this.props.google_id != nextProps.google_id){
+            RateActions.load(nextProps.google_id)
+            this.setState({filterComments: null })
+        }
+    }
 
-	componentWillReceiveProps(nextProps){
-		if ( this.props.google_id != nextProps.google_id){
-			RateActions.load(nextProps.google_id)
-		}
-	}
+    listeningRate(){
+        this.setState({rates: RateStore.getAll()})
+    }
 
-	render(){
-		
-		let Comments = null;
-		let Star5 = 0; 
-		let Star4= 0; 
-		let Star3= 0; 
-		let Star2= 0; 
-		let Star1= 0; 
-		let StarTotal = 0;
+    filterComments(e){
+        if(e.currentTarget.dataset.stars === "0"){
+            this.setState({filterComments: null })
+        }else{
+            this.setState({filterComments: e.currentTarget.dataset.stars })
+        }
+    }
 
-		if(this.state.rates){
-			Comments = this.state.rates.map((rate, i)=> {
-				return <Avaliation id={rate._id} key={rate._id} comment={rate.comment} stars={rate.stars}  />
-			});
+    render(){
 
-			this.state.rates.forEach(findStars)
+        let Comments = null;
+        let Star5 = 0;
+        let Star4= 0;
+        let Star3= 0;
+        let Star2= 0;
+        let Star1= 0;
+        let StarTotal = 0;
 
-			function findStars(rate){		
-				if(rate.stars === 5 ){
-					Star5++
-				}
-				if(rate.stars === 4 ){
-					Star4++
-				}
-				if(rate.stars === 3 ){
-					Star3++
-				}
-				if(rate.stars === 2 ){
-					Star2++
-				}
-				if(rate.stars === 1 ){
-					Star1++
-				}
-				StarTotal++ 
-			}
-				
-			
-		}
+        if(this.state.rates){
+                Comments = this.state.rates.map((rate, i)=> {
+                if(!isEmpty(rate.comment)) {
+                        if(this.state.filterComments){
+                                if(rate.stars == this.state.filterComments){
+                                        return  <Avaliation id={rate._id} key={rate._id} comment={rate.comment} stars={rate.stars} />
+                                } 
+                        }
+						else{
+                                return  <Avaliation id={rate._id} key={rate._id} comment={rate.comment} stars={rate.stars} />
+                        }
+                }				
+                return null;
+        });
 
-		return(
-		
+        if(Comments.every(function(elem){ return elem === null })){				
+            Comments = <div class="well " > Leave a comment!</div>
+        }
+
+        this.state.rates.forEach(findStars)
+
+        function isEmpty(str) {
+            return (!str || 0 === str.length || /^\s*$/.test(str) );
+        }
+
+        function findStars(rate){		
+            if(rate.stars === 5 ){
+                Star5++
+            }
+            if(rate.stars === 4 ){
+                Star4++
+            }
+            if(rate.stars === 3 ){
+                Star3++
+            }
+            if(rate.stars === 2 ){
+                Star2++
+            }
+            if(rate.stars === 1 ){
+                Star1++
+            }
+                StarTotal++ 
+            }				
+
+        }
+
+        return(
 			<div class="panel panel-default">
 				<div class="panel-heading">Details</div>
 				<div class="panel-body">
-							<div class="row">			
-								<label class="col-md-2 col-xs-6 great" ><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span> </label>  
-								<label class="col-md-10 col-xs-6" > {Star5} </label> 
+							<div class="row"  >			
+								<label class="col-md-2 col-xs-6 great select"  data-stars="5" onClick={this.filterComments}><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span> </label>  
+								<label class="col-md-10 col-xs-6 select"  data-stars="5"  onClick={this.filterComments}  > {Star5} </label> 
 							</div>
-							<div class="row">			
-								<label class="col-md-2 col-xs-6 great"  ><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span> </label>                                              
-								<label class="col-md-10 col-xs-6" > {Star4}  </label>
+							<div class="row"   >			
+								<label class="col-md-2 col-xs-6 great select" data-stars="4"  onClick={this.filterComments}  ><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span> </label>                                              
+								<label class="col-md-10 col-xs-6 select" data-stars="4"  onClick={this.filterComments}  > {Star4}  </label>
 							</div>
-							<div class="row">	
-								<label  class="col-md-2 col-xs-6 good" > <span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span> </label> 																							 
-								<label class="col-md-10 col-xs-6" >  {Star3} </label><br />
+							<div class="row " >	
+								<label  class="col-md-2 col-xs-6 good select" data-stars="3"  onClick={this.filterComments}  > <span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span> </label> 																							 
+								<label class="col-md-10 col-xs-6 select" data-stars="3"  onClick={this.filterComments}  >  {Star3} </label><br />
 							</div>
-							<div class="row">	
-								<label  class="col-md-2 col-xs-6 good" > <span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span> </label>																																		  
-								<label class="col-md-10 col-xs-6" >  {Star2}</label>
+							<div class="row"  >	
+								<label  class="col-md-2 col-xs-6 good select" data-stars="2"  onClick={this.filterComments}  > <span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span> </label>																																		  
+								<label class="col-md-10 col-xs-6 select" data-stars="2"  onClick={this.filterComments}  >  {Star2}</label>
 							</div>	
-							<div class="row">	
-								<label  class="col-md-2 col-xs-6  bad" > <span class="glyphicon glyphicon-star"></span ></label> 																																														 
-								<label class="col-md-10 col-xs-6" >  {Star1}  </label>
+							<div class="row " >	
+								<label  class="col-md-2 col-xs-6  bad select" data-stars="1"  onClick={this.filterComments}   > <span class="glyphicon glyphicon-star"></span ></label> 																																														 
+								<label class="col-md-10 col-xs-6 select" data-stars="1"  onClick={this.filterComments}  >  {Star1}  </label>
 							</div>
 							<br />
 							<div class="row">	
-								<label class="col-md-2 col-xs-6" >Total</label>  <label class="col-md-10 col-xs-6" >  {StarTotal} </label>
+								<label class="col-md-2 col-xs-6 select"  data-stars="0"  onClick={this.filterComments}  >Total</label>  <label class="col-md-10 col-xs-6 select" data-stars="0"  onClick={this.filterComments} >  {StarTotal} </label>
 							</div>
 						<hr />
 
@@ -113,9 +140,7 @@ export default class ListAvaliations extends React.Component{
 						{Comments}
 					
             	</div>
-			</div>
-			
-			
+			</div>			
 		);	
 	}
 }

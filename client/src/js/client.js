@@ -23,10 +23,6 @@ class App extends React.Component{
 	
 }
 
- 
-
-
-
 
 $("#id_restaurant").change(function(){
 	

@@ -6,7 +6,6 @@ class RateStore extends EventEmitter{
 	constructor(){
 		super();
 		this.rates = [];
-
 	}
 
 	getAll(){
@@ -16,14 +15,21 @@ class RateStore extends EventEmitter{
 	create(rate){
 		this.rates = rate;
 		this.emit("change");
+		this.emit("created", true);
 	}
 
-	load(rates){
-		
-		this.rates = rates;
-		this.emit("change");
-		
+	sendErrorCreation(){
+		this.emit("created", false);
 	}
+
+	load(rates){		
+		this.rates = rates;
+		this.emit("change");		
+	}
+
+	redirectLogin(){
+		this.emit("redirectLogin")
+	}	
 
 	handleActions(action){
 		console.log("action recieve" , action)
@@ -32,10 +38,24 @@ class RateStore extends EventEmitter{
 				this.create(action.rate);
 				break;
 			};
+			case "ERROR_CREATION_RATE":{				
+				this.sendErrorCreation();
+				break;
+			};
 			case "LOAD_RATES":{
 				this.load(action.rates);
 				break;
 			};
+			case "AUTH_ERROR":{
+				this.redirectLogin();
+				break;
+			};
+			case "LOGGED":{
+				this.emit("userSession", true)
+			};
+			case "NOT_LOGGED":{
+				this.emit("userSession", false)
+			}
 		}
 	}
 	

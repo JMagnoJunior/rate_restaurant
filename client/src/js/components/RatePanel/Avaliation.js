@@ -8,9 +8,9 @@ export default class Avaliation extends React.Component{
 
 	render(){		
 		return(
-			
-            	<div> {this.props.comment}, <span> rate: {this.props.stars} </span> </div>
-			
+			<div class="row border">
+            		<div class="col-md-10"> {this.props.comment} </div> <div class="col-md-2">{this.props.stars} </div>
+			</div>
 		);	
 	}
 }

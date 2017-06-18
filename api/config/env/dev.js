@@ -6,8 +6,8 @@ module.exports = {
     // sauceKey:process.env.SAUCE_ACCESS_KEY,
     // travisJobNumber:process.env.TRAVIS_JOB_NUMBER,
     // travisBuild:process.env.TRAVIS_BUILD,
-    clientID:process.env.CLIENT_ID,
-    clientSecret:process.env.CLIENT_SECRET
+    clientID:'1053926518071653',
+   clientSecret: '09f415729f634a06f2bbdb7dd1cd591e',
     // seleniumUser:process.env.SELENIUM_USER,
     // seleniumUserPassword:process.env.SELENIUM_USER_PASSWORD
 }

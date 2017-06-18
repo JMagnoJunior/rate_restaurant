@@ -30,9 +30,9 @@ module.exports = function(app) {
         var newRate = {};
         newRate.stars =  req.body.stars;
         newRate.comment =  req.body.comment;
-        newRate.user = "default"
-
-
+        newRate.user_name = req.body.user_name;
+        newRate.user_email = req.body.user_email;
+    
         Restaurant.addRate(google_id, newRate)
        .then(
             function(result){            
