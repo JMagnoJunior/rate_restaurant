@@ -61,9 +61,6 @@ label.star:before {
 }
 
 .select{
-  cursor: pointer;  
-}
-
-.error_msg{
-  color:red;
+  cursor: pointer;
+  
 }

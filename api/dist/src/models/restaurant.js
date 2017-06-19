@@ -6,14 +6,7 @@ module.exports = function() {
 
     var Rate = mongoose.Schema({
         user_name: {type: String},
-        user_email: {type: String, required: [true, "Enter your email"], 
-                    validate:{
-                        validator: function(v){
-                             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                            return re.test(v);
-                        },
-                        message: "Invalid Email"
-                    }},
+        user_email: {type: String, required: [true, "Enter your email"]},
         comment: {type: String},
         stars: {
                 type: Number, 
@@ -42,7 +35,8 @@ module.exports = function() {
         })
     }
 
-    schema.statics.addRate = function(google_id, newRate){        
+    schema.statics.addRate = function(google_id, newRate){
+
         return this.model('Restaurant').findOne({"google_id": google_id}).exec()
         .then(
             function(restaurant){

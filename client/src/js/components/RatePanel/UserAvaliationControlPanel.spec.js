@@ -7,6 +7,7 @@ import sinon from 'sinon';
 import UserAvaliationControlPanel from "./UserAvaliationControlPanel"
 
 
+
 describe('<UserAvaliationControlPanel />', function () { 
 
 	it('should render avaliation panel if it is not avaliated', function () {
