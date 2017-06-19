@@ -13,6 +13,7 @@ var auth = require('basic-auth')
 module.exports = function() {
 
     var app = express();
+    
     app.set("port", 3000)
 
     // Nem todos os navegadores/servidores suportam os metodos DELEHTE e PUT, entao 
@@ -57,7 +58,7 @@ module.exports = function() {
         // With this could be possible to log every request. But it should be used only for reusable components 
         if (!credentials || credentials.name !== 'raterestaurant' || credentials.pass !== '123456') {
             res.statusCode = 401
-            // res.setHeader('WWW-Authenticate', 'Basic realm="example"')
+            res.setHeader('WWW-Authenticate', 'Basic realm="example"')
             res.end('Access denied')
         } else {
            next()            

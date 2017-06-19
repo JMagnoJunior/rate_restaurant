@@ -8,13 +8,18 @@ chai.use(chaiAsPromised);
 var expect = chai.expect();
 var should = chai.should();
 
-require('../../config/database.js')("mongodb://localhost/raterestaurant_test"); 
-var mongoose = require('mongoose')
+var test_param = require('../test_params')
 
-var Restaurant = require('../../src/models/restaurant')()
+var Restaurant = test_param.restaurant
+var mongoose = test_param.mongoose
 
 
-describe('model.Restaurant', function () {
+
+describe('model.restaurant', function () {
+    // require('../../config/database.js')("mongodb://localhost/raterestaurant_test"); 
+    // var mongoose = require('mongoose')
+
+    // var Restaurant = require('../../src/models/restaurant')()
     var google_id = "0f9a4054a9948cbdddb563c4c9b18d00dfa7bac6"
     
     describe('Restaurant.listAllRates', function listAllRates() {
