@@ -38,6 +38,8 @@
     "enzyme": "2.7.1",
     "extract-text-webpack-plugin": "^2.1.2",
     "jsdom": "9.9.1",
+    "mocha": "^3.4.2",
+    "mocha-webpack": "^0.7.0",
     "react-addons-test-utils": "15.4.2",
     "react-dom": "^15.4.0",
     "sinon": "^1.17.7"
@@ -45,7 +47,7 @@
   "scripts": {
     "dev": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base src --inline --hot --colors --watch",
     "test": "mocha -w test/helpers/browser.js src/**/*.spec.js",
-    "build": "webpack -p && cp src/index.html dist/index.html  && cp -R src/statics dist/statics"
+    "build": "mocha test/helpers/browser.js src/**/*.spec.js && webpack -p && cp src/index.html dist/index.html  && cp -R src/statics dist/statics"
   },
   "author": "",
   "license": "ISC"

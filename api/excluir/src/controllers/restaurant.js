@@ -7,7 +7,7 @@ module.exports = function(app) {
     var controller = {}
 
     controller.listRates = function(req, res){
-        var google_id = req.params.id;
+        var google_id = sanitize(req.params.id);
       
         Restaurant.listAllRates(google_id)
         .then(
@@ -25,14 +25,13 @@ module.exports = function(app) {
     }
 
     controller.addRate = function(req, res){
-        var google_id = req.params.id;
+        var google_id = sanitize(req.params.id);
 
         var newRate = {};
-        newRate.stars =  req.body.stars;
-        newRate.comment =  req.body.comment;
-        newRate.user_name = req.body.user_name;
-        newRate.user_email = req.body.user_email;
-    
+        newRate.stars =  sanitize(req.body.stars);
+        newRate.comment =  sanitize(req.body.comment);
+        newRate.user_name = sanitize(req.body.user_name);
+        newRate.user_email = sanitize(req.body.user_email);        
         Restaurant.addRate(google_id, newRate)
        .then(
             function(result){            

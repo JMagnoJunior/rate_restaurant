@@ -6,10 +6,14 @@ var session = require('express-session');
 var passport = require('passport');
 var helmet = require('helmet');
 
+var auth = require('basic-auth')
+
+
 
 module.exports = function() {
 
     var app = express();
+    
     app.set("port", 3000)
 
     // Nem todos os navegadores/servidores suportam os metodos DELEHTE e PUT, entao 
@@ -20,25 +24,51 @@ module.exports = function() {
     app.use(bodyParser.json());
     app.use(require('method-override')());
 
+    app.use(express.static('../public'))
+
+
     // ISSO É PARA O CORS
     app.use(function (req, res, next) {
 
-        // Website you wish to allow to connect
-        res.setHeader('Access-Control-Allow-Origin', '*');
+        // For sake of simplicity, everybody is allowed to access
+        res.setHeader('Access-Control-Allow-Origin', '*');         
 
         // Request methods you wish to allow
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
         // Request headers you wish to allow
-        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        // res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, api_key, Accept, Authorization");
 
         // Set to true if you need the website to include cookies in the requests sent
         // to the API (e.g. in case you use sessions)
         res.setHeader('Access-Control-Allow-Credentials', true);
 
         // Pass to next layer of middleware
+
+        if ('OPTIONS' == req.method) {
+            res.send(200);       
+        }    
+
         next();
     });
+
+    app.use(function (req, res, next) {
+       var credentials = auth(req)
+        // The right way to do this is to have differents credentials for every front end.
+        // With this could be possible to log every request. But it should be used only for reusable components 
+        if (!credentials || credentials.name !== 'raterestaurant' || credentials.pass !== '123456') {
+            res.statusCode = 401
+            res.setHeader('WWW-Authenticate', 'Basic realm="example"')
+            res.end('Access denied')
+        } else {
+           next()            
+        }
+    });
+
+
+    
 
     // para o express  trabalhar com sessoes
     app.use(cookieParser());
