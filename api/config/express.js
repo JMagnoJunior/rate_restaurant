@@ -24,6 +24,8 @@ module.exports = function() {
     app.use(bodyParser.json());
     app.use(require('method-override')());
 
+    app.use(express.static('../public'))
+
 
     // ISSO É PARA O CORS
     app.use(function (req, res, next) {
@@ -37,7 +39,7 @@ module.exports = function() {
         // Request headers you wish to allow
         // res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
         // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+        res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, api_key, Accept, Authorization");
 
         // Set to true if you need the website to include cookies in the requests sent
         // to the API (e.g. in case you use sessions)
