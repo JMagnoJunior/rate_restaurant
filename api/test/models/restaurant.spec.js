@@ -15,7 +15,7 @@ var mongoose = test_param.mongoose
 describe('model.restaurant', function () {
 
     var google_id = "0f9a4054a9948cbdddb563c4c9b18d00dfa7bac6";
-     
+
     describe('Restaurant.listAllRates', function listAllRates() {
         before (function(done) {
             Restaurant.create({"google_id":google_id,
@@ -67,7 +67,7 @@ describe('model.restaurant', function () {
             mongoose.connection.db.dropDatabase(done);
         })
 
-        it ('should add rate for the restaurant',function() {
+        it ('should add rate for existent restaurants',function() {
             var newRate = {};
             newRate = {"user_name": "Test User", 
                                     "user_email": "newratemail@test.com", 
@@ -80,6 +80,22 @@ describe('model.restaurant', function () {
                 });
             });
         });
+
+        it ('should add rate for new restaurant',function() {
+            var newRate = {};
+            var new_google_id = "000000000000000000000"
+            newRate = {"user_name": "Test User", 
+                                    "user_email": "newratemail@test.com", 
+                                    "comment":  "new rate comment",
+                                    "stars":  5};
+
+            return Restaurant.addRate(new_google_id, newRate).then(function(){
+                return Restaurant.listAllRates(new_google_id).then(function(result){
+                    result.rates.length.should.equal(1);
+                });
+            });
+        });
+
         it ('should throw error when the stars is >5', function() {
             var invalidRate = {"user_name": "Test User", 
                                "user_email": "newratemail@test.com", 
