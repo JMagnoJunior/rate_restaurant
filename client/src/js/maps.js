@@ -1,28 +1,32 @@
-/* This file is used to config google maps
+/**
+ * This file is used to config google maps
+ * 
+ * @author Magno Jr <is.magnojr@gmail.com>
+ * 
+ * The callback function I am using to show to welcome message. It could be put in another place, but for the sake of simplicity I put it here.
+ * I am expecting the browser will have the geo enabled. But for safete I put a control when it is disabled. But I don't know if I will have time to improve the aspects of this control.
+ */ 
 
-The callback function I am using to show to welcome message. It could be put in another place, but for the sake of simplicity I put it here.
+"use strict";
 
-I am expecting the browser will have the geo enabled. But for safete I put a control when it is disabled. But I don't know if I will have time to improve the aspects of this control.
- */
 var map;
 var service;
-var infowindow;
 var geocoder;
 var myposition;
 
 function initialize(position) {
 
-    if(position){
+    if (position) {
         myposition = position;
-    }else{
+    } else {
         // if there is not geo supported by browser then I choose some random place
-        myposition = new google.maps.LatLng(-33.8665433,151.1956316);
+        myposition = new google.maps.LatLng(-33.8665433, 151.1956316);
     }
     geocoder = new google.maps.Geocoder();
     map = new google.maps.Map(document.getElementById('map'), {
         center: myposition,
         zoom: 15
-        });
+    });
     var request = {
         location: myposition,
         radius: '500',
@@ -40,19 +44,21 @@ function callback(results, status) {
     $("#welcome").removeClass("hide");
 
     if (status == google.maps.places.PlacesServiceStatus.OK) {
+        var place;
+        var marker;
         for (var i = 0; i < results.length; i++) {
-            var place = results[i];
-            var marker = new google.maps.Marker({
+            place = results[i];
+            marker = new google.maps.Marker({
                 position: results[i].geometry.location,
                 label: results[i].name,
                 map: map
             });
-            marker.place = place
-            marker.addListener('click', function() {                
-                $("#name_restaurant").html(this.place.name)
-                $("#id_restaurant").val(this.place.id)
-                $("#id_restaurant").change()
-                $("#welcome").addClass("hide")
+            marker.place = place;
+            marker.addListener('click', function() {        
+                $("#name_restaurant").html(this.place.name);
+                $("#id_restaurant").val(this.place.id);
+                $("#id_restaurant").change();
+                $("#welcome").addClass("hide");
             });
         }
     }
@@ -60,7 +66,7 @@ function callback(results, status) {
 }
 // it only will be used if theres no browser support for geo
 function rerenderMap(){
-    
+    geocoder = new google.maps.Geocoder();
     geocoder.geocode({ 'address': $("#location").val() + ', Brasil', 'region': 'BR' }, function (results, status) {
         
             if (status == google.maps.GeocoderStatus.OK) {
@@ -81,16 +87,15 @@ function rerenderMap(){
 
 $(document).ready(function () {
 
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function Latlng(pos){
-                myposition = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-                initialize(myposition);
-        });
-    }
-    else{
+    // I checked if browser allowed get the user position
+    var checkedPosition = false;
+    navigator.geolocation.getCurrentPosition(function Latlng(pos) {
+        myposition = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+        initialize(myposition);
+    },
+    function(err){
         initialize(null);
         $('#setAddress').removeClass("hide");
-    } 
-                
+   })
+
 });
-    

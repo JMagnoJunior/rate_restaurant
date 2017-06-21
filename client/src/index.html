@@ -1,13 +1,8 @@
 <!DOCTYPE html>
 <html>
-
     <head>
         <meta charset="utf-8">
         <title>Rate Restaurant</title>
-
-          <!--Import Google Icon Font-->
-	      <!-- <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
-	      <!--Import materialize.css-->
 
 	      <!--Let browser know website is optimized for mobile-->
 	       <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
@@ -15,30 +10,76 @@
            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
            <link href="/statics/default.css" rel="stylesheet">
            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-           <!--<link href="/statics/font-awesome.min.css" rel="stylesheet" />-->
            <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
     </head>
 
-    <body>     
+    <body>    
+        <!-- this script will be used only if the user does not have allowed browser geo localization -->
+        <!--  if geo is not ativated the rerenderMap handler will render the place informed on search input-->
+        <script>
+            function rerenderMap(){
+                    geocoder = new google.maps.Geocoder();
+                    geocoder.geocode({ 'address': $("#location").val() + ', Brasil', 'region': 'BR' }, function (results, status) {
+                        
+                            if (status == google.maps.GeocoderStatus.OK) {
+                                var request = {
+                                    location: results[0].geometry.location,
+                                    radius: '500',
+                                    query: 'restaurant'
+                                };
+                                map = new google.maps.Map(document.getElementById('map'), {
+                                    center: results[0].geometry.location,
+                                    zoom: 15
+                                });
+                                service = new google.maps.places.PlacesService(map);
+                                service.textSearch(request, callback);
+                        }
+                    });    
+            }
 
-            <br />
-                
-            <span id="loadmsg">loading map...</span>
-            
-                <!-- It will be replaced by map -->
-                
-                    <div id="map" >
-                    </div>
-                
-                <div class="container">
-                <!-- a controle that will be visible only if the browser does not support geo -->
+            function callback(results, status) {
+
+                $('#loadmsg').addClass("hide");
+                $("#welcome").removeClass("hide");
+
+                if (status == google.maps.places.PlacesServiceStatus.OK) {
+                    for (var i = 0; i < results.length; i++) {
+                        var place = results[i];
+                        var marker = new google.maps.Marker({
+                            position: results[i].geometry.location,
+                            label: results[i].name,
+                            map: map
+                        });
+                        marker.place = place
+                        marker.addListener('click', function() {                
+                            $("#name_restaurant").html(this.place.name)
+                            $("#id_restaurant").val(this.place.id)
+                            $("#id_restaurant").change()
+                            $("#welcome").addClass("hide")
+                        });
+                    }
+                }
+            }
+        </script>
+        <br />
+        
+        <span id="loadmsg">loading map...</span>
+        
+        <!-- It will be replaced by map -->        
+        <div id="map" >
+        </div>
+        
+            <div class="container">
+
+                <!-- a controle that will be visible only if the browser does not support geo -->        
                 <div class="row">
-                    <div id="setAddress" class="hide">
-                        <input id="location" type="text" ></input> <button onclick="rerenderMap()" >Search</button>
+                    <div id="setAddress" class="hide form-group">
+                        <input class="form-control" id="location" type="text" placeholder="enter the place where you are" ></input> <button class="btn btn-warning" onclick="rerenderMap()" >Search</button>
+                        <p class="error_msg"> You should allow browser geolocalization </p>
                     </div>
                 </div>
                 <br />
-
+                
                 <div id="welcome" class="hide row text-center">
                     
                     <div class="jumbotron">
@@ -46,7 +87,7 @@
                         <p>select some restaurant marked on map.</p>
                     </div>
                 </div>
-                
+                <!-- The restaurant selected on map -->
                 <div class="row">
                     <h3 id="name_restaurant"></h3> <input id="id_restaurant"  type="hidden"/>
                 </div>
@@ -60,7 +101,6 @@
         </div>
         
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6vMhpzGC9qmlg7TEGuo7Dr5cE6VaHE3E&libraries=places"></script>       
-        <!--<script src="maps.js"></script>        -->
         <script src="client.min.js"></script>
     
     </body>

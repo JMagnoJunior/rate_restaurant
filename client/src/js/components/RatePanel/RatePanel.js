@@ -1,3 +1,8 @@
+/**
+ * It render the a control panel and all avaliations
+ * 
+ * @author Magno Jr <is.magnojr@gmail.com>
+ */
 import React from "react"
 
 import UserAvaliationControlPanel from  "./UserAvaliationControlPanel"

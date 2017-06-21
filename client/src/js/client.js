@@ -1,40 +1,33 @@
-import React from "react"
-import ReactDOM from "react-dom"
+/**
+ * It just render the rate panel and include the id from google map as atribute of my react components.  
+ * 
+ * @author Magno Jr <is.magnojr@gmail.com>
+ */
 
-import RatePanel from "./components/RatePanel/RatePanel"
-// import Auth from "./componentes/Infra/Auth/Auth"
-import { Router, Route, hashHistory } from 'react-router'
+"use strict";
 
 require('./maps.js')
 
+import React from "react"
+import ReactDOM from "react-dom"
+import RatePanel from "./components/RatePanel/RatePanel"
+
 class App extends React.Component{
-	constructor(){
-		super();
 
-	}
+    constructor(){
+        super();
+    }
 
-	
-	render() {
-		return (
+    render() {
+        return(
 			<div> 
-				<RatePanel google_id={$("#id_restaurant").val()} />	  	
+                <RatePanel google_id={$("#id_restaurant").val()} />	  	
 			</div>
 		);
 	}
-	
+
 }
 
-
-$("#id_restaurant").change(function(){
-	
-		ReactDOM.render((
-			<App />
-		), document.getElementById('app'))
-
+$("#id_restaurant").change(function(){	
+    ReactDOM.render((<App />), document.getElementById('app'))
 })
-
-// ReactDOM.render((
-// 		<Router history={hashHistory}>
-// 			<Route path="/" component={App}/>
-// 		</Router>
-// 	), document.getElementById('app'))
