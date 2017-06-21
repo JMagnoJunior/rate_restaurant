@@ -1,59 +1,63 @@
+/**
+ * This emit events listened by components after some action recieved.
+ *
+ * @author Magno Jr <is.magnojr@gmail.com>
+ */
 import { EventEmitter } from "events";
-
 import dispatcher from "../dispatcher";
 
-class RateStore extends EventEmitter{
-	constructor(){
+class RateStore extends EventEmitter {
+	
+	constructor() {
 		super();
 		this.rates = [];
 	}
 
-	getAll(){
+	getAll() {
 		return this.rates;
 	}
 
-	create(rate){
+	create(rate) {
 		this.rates = rate;
 		this.emit("change");
 		this.emit("created", true);
 	}
 
-	sendErrorCreation(){
+	sendErrorCreation() {
 		this.emit("created", false);
 	}
 
-	load(rates){		
+	load(rates) {
 		this.rates = rates;
 		this.emit("change");		
 	}
 
-	redirectLogin(){
-		this.emit("redirectLogin")
+	redirectLogin() {
+		this.emit("redirectLogin");
 	}	
 
-	handleActions(action){
-		console.log("action recieve" , action)		
-		switch(action.type){
-			case "NEW_RATE":{				
+	handleActions(action) {
+		switch (action.type) {
+			case "NEW_RATE": {				
 				this.create(action.rate);
 				break;
 			};
-			case "ERROR_CREATION_RATE":{				
+			case "ERROR_CREATION_RATE": {				
 				this.sendErrorCreation();
 				break;
 			};
-			case "LOAD_RATES":{
+			case "LOAD_RATES": {
 				this.load(action.rates);
 				break;
 			};
-			case "AUTH_ERROR":{
+			case "AUTH_ERROR": {
 				this.redirectLogin();
 				break;
 			};
-			case "LOGGED":{
+			case "LOGGED": {
 				this.emit("userSession", true)
 			};
-			case "NOT_LOGGED":{
+			case "NOT_LOGGED": {
 				this.emit("userSession", false)
 			}
 		}
