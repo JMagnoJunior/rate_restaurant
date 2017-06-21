@@ -1,12 +1,19 @@
+/**
+ * 
+ * Mongo DB configuration
+ * 
+ * @author Magno Junior <is.magnojr@gmail.com>
+ */
+
 var mongoose = require('mongoose');
 
 module.exports = function(uri) {
 
     // we don't want see query log for tests and production
-    if(process.env.NODE_ENV === "prd" || process.env.NODE_ENV === "tst"){
-      mongoose.set('debug',false);
-    } else{
-      mongoose.set('debug',true);
+    if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "test") {
+        mongoose.set('debug',false);
+    } else {
+        mongoose.set('debug',true);
     }
 
     mongoose.connect(uri,{ server: { poolSize: 15 }});
@@ -24,9 +31,9 @@ module.exports = function(uri) {
     });
 
     process.on('SIGINT', function() {
-      mongoose.connection.close(function() {
-        console.log('Mongoose! desconnected');
-        process.exit(0);
-      });
+        mongoose.connection.close(function() {
+            console.log('Mongoose! desconnected');
+            process.exit(0);
+        });
     });
 }

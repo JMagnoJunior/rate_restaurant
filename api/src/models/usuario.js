@@ -1,3 +1,9 @@
+/**
+ * This is used by passport.
+ *  passaport was put here just to show how it works 
+ * 
+ * @author Magno Junior <is.magnojr@gmail.com>
+ */
 var mongoose = require('mongoose')
 var findOrCreate = require('mongoose-findorcreate');
 

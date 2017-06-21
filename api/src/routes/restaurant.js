@@ -1,4 +1,11 @@
-
+/**
+ * restaurant routes
+ * 
+ * just a get in /restaurants/:id/rates to list all rate from some restaurant
+ * and a post in /restaurants/:id/rates to add rates to some restaurant
+ * 
+ * @author Magno Junior <is.magnojr@gmail.com>
+ */
 
 module.exports = function(app) {
     

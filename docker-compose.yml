@@ -16,7 +16,7 @@ services:
       - web  
     environment:
       - NODE_ENV=production
-      - MONGO_ENV=mongodb://mongo_dev:27017/rate_restaurant
+      - MONGO_URL=mongodb://mongo_dev:27017/rate_restaurant
       
   client:
     image: jmagnojunior/rate_restaurant_client:0.1
