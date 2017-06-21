@@ -3,6 +3,6 @@ module.exports = function(){
 		
     	return require('./env/'+ process.env.NODE_ENV + '.js')
 	}else{
-		return require('./env/dev.js')
+		return require('./env/development.js')
 	}
 }

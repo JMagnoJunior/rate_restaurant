@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "./node_modules/.bin/supervisor -q -n exit -x  mocha -- -b 'test/**/*.spec.js'  ",
-    "start": "./node_modules/.bin/supervisor -w src  node  server.js"
+    "start": "./node_modules/.bin/supervisor -w src  node  server.js",
+    "build": "grunt"
   },
   "author": "",
   "license": "ISC",

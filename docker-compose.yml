@@ -1,0 +1,31 @@
+version: '2'
+services:
+  mongo_dev: 
+    image: "mongo"   
+    ports:
+     - "27017:27017" 
+    volumes:
+     - mongodev:/data/db
+    networks:
+      - web
+  api:
+    image: jmagnojunior/rate_restaurant_api:0.1
+    ports:
+     - "3000:3000"     
+    networks:
+      - web  
+    environment:
+      - NODE_ENV=production
+      - MONGO_ENV=mongodb://mongo_dev:27017/rate_restaurant
+      
+  client:
+    image: jmagnojunior/rate_restaurant_client:0.1
+    ports:
+     - "8080:8080"
+    networks:
+      - web  
+
+volumes:
+  mongodev:
+networks:
+  web:
