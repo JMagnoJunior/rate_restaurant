@@ -13,11 +13,9 @@
 ## Installation
 
     The easier way to see this thing running is using docker. 
-
     You need download the file docker-compose.yml and run the command:
+    docker-compose up
     
-    docker-compose up 
-    
     Another way to install it using npm install for both front and back end. You will need a mongo server and a server node installed.
    
 ## Architectural Decisions
@@ -40,8 +38,8 @@
 ## CI, CD and Deploy
 
     1 - I prepared some scripts to test and build application both in the back end and in the front and. Jenkins can easily be prepared to run this pipeline at any time.
-    2 - I put in package.json all scripts needed for test and build the application. Jenkins only will have to call it and run the pipeline. (All the hard work was done by webpack and grunt)
-    3 - Using docker swarm we can put a new image of a service in production at any time we want. All we have to do is to update the image. It could be just on more step on jenkins pipeline. 
+    2 - I put in package.json all scripts needed for test and build the application. Jenkins only will have to call it and run the pipeline. (All the hard work was done by webpack and grunt).
+    3 - Using docker swarm we can put a new image of a service in production at any time we want. All we have to do is to update the image. It could be just on more step on jenkins pipeline. 
 
 ## Warning
      This application was tested on google chrome. I had a issue render it on safari (The css that I used to print the stars is not working properly.)
