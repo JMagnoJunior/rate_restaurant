@@ -9,7 +9,7 @@ services:
     networks:
       - web
   api:
-    image: jmagnojunior/rate_restaurant_api:0.1
+    image: jmagnojunior/rate_restaurant_api:0.4
     ports:
      - "3000:3000"     
     networks:
@@ -17,7 +17,8 @@ services:
     environment:
       - NODE_ENV=production
       - MONGO_URL=mongodb://mongo_dev:27017/rate_restaurant
-      
+    depends_on:
+      - "mongo_dev"
   client:
     image: jmagnojunior/rate_restaurant_client:0.1
     ports:
