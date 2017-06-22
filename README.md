@@ -43,3 +43,5 @@
     2 - I put in package.json all scripts needed for test and build the application. Jenkins only will have to call it and run the pipeline. (All the hard work was done by webpack and grunt)
     3 - Using docker swarm we can put a new image of a service in production at any time we want. All we have to do is to update the image. It could be just on more step on jenkins pipeline. 
 
+## Warning
+     This application was tested on google chrome. I had a issue render it on safari (The css that I used to print the stars is not working properly.)
