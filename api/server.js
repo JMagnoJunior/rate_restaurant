@@ -37,7 +37,7 @@ if (cluster.isMaster) {
     var debug = require('debug')('node:server');
     var http = require('http');
     var config = require('./config/config')();
-    require('./config/passport')();
+    // require('./config/passport')();
     require('./config/database.js')(config.db); 
     var auth = require('basic-auth');
 

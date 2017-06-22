@@ -10,7 +10,7 @@ var load = require('express-load');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
-var passport = require('passport');
+// var passport = require('passport');
 var helmet = require('helmet');
 var auth = require('basic-auth');
 
@@ -28,6 +28,27 @@ module.exports = function() {
 
     app.use(express.static('../public'))
 
+    // sessions
+    // app.use(cookieParser());
+    // app.use(session(
+    //     { secret: 'atrocidade estrelar',
+    //       resave: true,
+    //       saveUninitialized: true
+    // } ));
+
+    // passaport para oauth 2.0 (I could remove this, but I decide to keep it just to show as example)
+    // app.use(passport.initialize());
+    // this session have to be placed before the session express
+    // app.use(passport.session());
+
+    // A bunch of code for secure
+    app.use(helmet.frameguard({ action: 'allow-from', domain: 'https://localhost:8080' }));
+    // fake another plataform
+    app.use(helmet.hidePoweredBy({ setTo: 'PHP 5.5.14' }));
+    // avoid cross-site scripting
+    app.use(helmet.xssFilter());
+    app.use(helmet.noSniff());
+
     // CORS
     app.use(function (req, res, next) {
 
@@ -39,47 +60,26 @@ module.exports = function() {
         // Set to true if you need the website to include cookies in the requests sent
         // to the API (e.g. in case you use sessions)
         res.setHeader('Access-Control-Allow-Credentials', true);
-        // when the request is that flight
-        if ('OPTIONS' == req.method) {
-            res.send(200);       
-        }
         // Pass to next layer of middleware
         next();
     });
 
     app.use(function (req, res, next) {
-       var credentials = auth(req)
-        // The right way to do this is to have differents credentials for every front end.
-        // With this could be possible to log every request. But it should be used only for reusable components 
-        if (!credentials || credentials.name !== 'raterestaurant' || credentials.pass !== '123456') {
-            res.statusCode = 401;
-            res.setHeader('WWW-Authenticate', 'Basic realm="example"');
-            res.end('Access denied');
+         var credentials = auth(req)        
+        // when the request is that flight
+        if ('OPTIONS' == req.method) {
+            res.sendStatus(200);
         } else {
-           next();
-        }
-    });
-
-    // sessions
-    app.use(cookieParser());
-    app.use(session(
-        { secret: 'atrocidade estrelar',
-          resave: true,
-          saveUninitialized: true
-    } ));
-
-    // passaport para oauth 2.0 (I could remove this, but I decide to keep it just to show as example)
-    app.use(passport.initialize());
-    // this session have to be placed before the session express
-    app.use(passport.session());
-
-    // A bunch of code for secure
-    app.use(helmet.frameguard({ action: 'allow-from', domain: 'https://localhost:8080' }));
-    // fake another plataform
-    app.use(helmet.hidePoweredBy({ setTo: 'PHP 5.5.14' }));
-    // avoid cross-site scripting
-    app.use(helmet.xssFilter());
-    app.use(helmet.noSniff());
+        
+            if (!credentials || credentials.name !== 'raterestaurant' || credentials.pass !== '123456') {
+                res.statusCode = 401;
+                res.setHeader('WWW-Authenticate', 'Basic realm="example"');
+                res.end('Access denied');
+            } else{
+                next()
+            }
+        } 
+    })
 
     // just for swagger
     app.use(express.static('./public'));
