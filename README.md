@@ -1,8 +1,8 @@
 # rate_restaurant
 
-## About This Project
+## ALERT:  I miss a lot of important concepts in this project (like immutables, optimistic update, one way data flow, the organization of components and etc). Please don' use this. It still here as a lesson learnd about how not to programming with react!!
 
-    It shows a example implementation of a full stack app with javascript. (and you can rate restaurants too...)
+## About This Project
  
     This project was divided in two part: Front end using React.js and a backend using express. 
 
