@@ -1,6 +1,6 @@
 # rate_restaurant
 
-## ALERT:  I miss a lot of important concepts in this project (like immutables, optimistic update, one way data flow, the organization of components and etc). Please don' use this. It still here as a lesson learnd about how not to programming with react!!
+## ALERT:  I miss a lot of important concepts in this project (like immutables, optimistic update, one way data flow, the organization of components and etc). Please don' use this. It still here as a lesson learnd about how to not programming with react!!
 
 ## About This Project
  
